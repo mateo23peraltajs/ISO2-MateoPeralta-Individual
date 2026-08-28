@@ -38,7 +38,7 @@ public class DataInitializer implements CommandLineRunner {
             // 1. Creación de Administrador
             Administrador admin = new Administrador("admin@empresa.com", "1234", 3);
             usuarioRepository.save(admin);
-
+            
             Persona personaAdmin = new Persona("Carlos", "Gómez", "30111222", 
                     LocalDate.of(1985, 5, 12), "carlos.gomez@mail.com");
             personaAdmin.setUsuario(admin);
