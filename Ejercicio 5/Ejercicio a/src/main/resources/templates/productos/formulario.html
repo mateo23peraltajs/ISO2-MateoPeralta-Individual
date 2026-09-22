@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${productoDTO.id == null ? 'Nuevo Producto' : 'Editar Producto'}">Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/productos}">Sistema ERP</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0" th:text="${productoDTO.id == null ? 'Registrar Nuevo Producto' : 'Editar Producto'}"></h4>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario mapeado al DTO con validaciones -->
+                    <form th:action="@{/productos/guardar}" th:object="${productoDTO}" method="post">
+                        
+                        <!-- Campo oculto para el ID si es edición -->
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de Producto</label>
+                                <!-- Si estamos editando, evitamos cambiar el tipo para simplificar (readonly o disabled en la vista) -->
+                                <select class="form-select" th:field="*{tipoProducto}" id="tipoProducto" onchange="toggleCampos()" th:disabled="${productoDTO.id != null}">
+                                    <option value="FISICO">Físico</option>
+                                    <option value="DIGITAL">Digital</option>
+                                </select>
+                                <!-- Enviamos el valor oculto si está deshabilitado -->
+                                <input type="hidden" th:if="${productoDTO.id != null}" th:field="*{tipoProducto}" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('tipoProducto')}" th:errors="*{tipoProducto}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Categoría (Agregación)</label>
+                                <select class="form-select" th:field="*{categoriaId}">
+                                    <option value="">-- Seleccione --</option>
+                                    <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Código</label>
+                                <input type="text" class="form-control" th:field="*{codigo}" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" th:field="*{nombre}" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" th:field="*{descripcion}" rows="2"></textarea>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Precio de Venta</label>
+                                <input type="number" step="0.01" class="form-control" th:field="*{precioVenta}" />
+                                <div class="text-danger" th:if="${#fields.hasErrors('precioVenta')}" th:errors="*{precioVenta}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Campos específicos para producto físico -->
+                        <div id="seccionFisico" class="border p-3 mb-3 bg-white rounded">
+                            <h5>Atributos Físicos</h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <label class="form-label">Stock</label>
+                                    <input type="number" class="form-control" th:field="*{stock}" />
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <label class="form-label">Stock Mínimo</label>
+                                    <input type="number" class="form-control" th:field="*{stockMinimo}" />
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <label class="form-label">Peso (kg)</label>
+                                    <input type="number" step="0.1" class="form-control" th:field="*{peso}" />
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Ubicación Depósito</label>
+                                <input type="text" class="form-control" th:field="*{ubicacionDeposito}" />
+                            </div>
+                        </div>
+
+                        <!-- Campos específicos para producto digital -->
+                        <div id="seccionDigital" class="border p-3 mb-3 bg-white rounded" style="display: none;">
+                            <h5>Atributos Digitales</h5>
+                            <div class="mb-2">
+                                <label class="form-label">URL Descarga</label>
+                                <input type="url" class="form-control" th:field="*{urlDescarga}" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Vigencia (Días)</label>
+                                <input type="number" class="form-control" th:field="*{vigenciaDias}" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a th:href="@{/productos}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mostrar u ocultar secciones dependiendo del tipo de producto
+    function toggleCampos() {
+        const tipo = document.getElementById('tipoProducto').value;
+        if (tipo === 'FISICO') {
+            document.getElementById('seccionFisico').style.display = 'block';
+            document.getElementById('seccionDigital').style.display = 'none';
+        } else {
+            document.getElementById('seccionFisico').style.display = 'none';
+            document.getElementById('seccionDigital').style.display = 'block';
+        }
+    }
+    // Ejecutar al cargar la página
+    document.addEventListener("DOMContentLoaded", toggleCampos);
+</script>
+
+</body>
+</html>
+

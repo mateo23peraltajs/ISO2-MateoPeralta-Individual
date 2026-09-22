@@ -1,0 +1,12 @@
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/JpaPrueba.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/logica/Alumno.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/logica/Carrera.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/logica/Controladora.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/logica/Materia.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/AlumnoJpaController.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/CarreraJpaController.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/ControladoraPersistencia.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/MateriaJpaController.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/exceptions/IllegalOrphanException.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/exceptions/NonexistentEntityException.java
+/home/mateoperalta/EjerciciosIndividualesIS2/Ejercicio 3/JPA Tutorial/src/main/java/com/mycompany/jpaprueba/persistencia/exceptions/PreexistingEntityException.java
